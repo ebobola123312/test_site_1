@@ -1,0 +1,805 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Магазин бытовой техники АТЛАНТ</title>
+    <style>
+        /* Общие стили */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Arial', sans-serif;
+        }
+        
+        body {
+            background-color: #f5f5f5;
+            color: #333;
+            line-height: 1.6;
+        }
+        
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 15px;
+        }
+        
+        /* Шапка */
+        header {
+            background-color: #1a5276;
+            color: white;
+            padding: 15px 0;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+        }
+        
+        nav ul {
+            display: flex;
+            list-style: none;
+        }
+        
+        nav ul li {
+            margin-left: 20px;
+        }
+        
+        nav ul li a {
+            color: white;
+            text-decoration: none;
+            font-weight: bold;
+            transition: color 0.3s;
+        }
+        
+        nav ul li a:hover {
+            color: #aed6f1;
+        }
+        
+        /* Основной контент */
+        main {
+            padding: 30px 0;
+            min-height: calc(100vh - 140px);
+        }
+        
+        .page {
+            display: none;
+        }
+        
+        .page.active {
+            display: block;
+        }
+        
+        /* Главная страница */
+        .hero {
+            background-color: #2e86c1;
+            color: white;
+            padding: 60px 0;
+            text-align: center;
+            margin-bottom: 30px;
+            border-radius: 5px;
+        }
+        
+        .hero h1 {
+            font-size: 36px;
+            margin-bottom: 20px;
+        }
+        
+        .hero p {
+            font-size: 18px;
+            max-width: 800px;
+            margin: 0 auto 20px;
+        }
+        
+        .features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        
+        .feature {
+            background-color: white;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        
+        .feature h3 {
+            color: #1a5276;
+            margin-bottom: 10px;
+        }
+        
+        .delivery-info {
+            background-color: #d4efdf;
+            padding: 20px;
+            border-radius: 5px;
+            margin-bottom: 30px;
+            border-left: 5px solid #27ae60;
+        }
+        
+        .map {
+            background-color: white;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            margin-bottom: 30px;
+        }
+        
+        .map h2 {
+            color: #1a5276;
+            margin-bottom: 15px;
+        }
+        
+        /* Страница товаров */
+        .products-page {
+            display: flex;
+            flex-wrap: wrap;
+        }
+        
+        .categories {
+            flex: 0 0 250px;
+            background-color: white;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            margin-right: 20px;
+        }
+        
+        .categories h2 {
+            color: #1a5276;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .category-list {
+            list-style: none;
+        }
+        
+        .category-list li {
+            margin-bottom: 10px;
+        }
+        
+        .category-list a {
+            color: #333;
+            text-decoration: none;
+            display: block;
+            padding: 8px 10px;
+            border-radius: 3px;
+            transition: background-color 0.3s;
+        }
+        
+        .category-list a:hover, .category-list a.active {
+            background-color: #eaf2f8;
+            color: #1a5276;
+        }
+        
+        .products-container {
+            flex: 1;
+            min-width: 300px;
+        }
+        
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 20px;
+        }
+        
+        .product-card {
+            background-color: white;
+            border-radius: 5px;
+            overflow: hidden;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            transition: transform 0.3s;
+            cursor: pointer;
+        }
+        
+        .product-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .product-image {
+            height: 200px;
+            background-color: #f8f9fa;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #7f8c8d;
+        }
+        
+        .product-info {
+            padding: 15px;
+        }
+        
+        .product-info h3 {
+            margin-bottom: 10px;
+            color: #1a5276;
+        }
+        
+        .product-info p {
+            color: #7f8c8d;
+            font-size: 14px;
+        }
+        
+        /* Страница товара */
+        .product-detail {
+            background-color: white;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        
+        .product-detail-content {
+            display: flex;
+            flex-wrap: wrap;
+        }
+        
+        .product-detail-image {
+            flex: 0 0 300px;
+            height: 300px;
+            background-color: #f8f9fa;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #7f8c8d;
+            margin-right: 20px;
+            margin-bottom: 20px;
+        }
+        
+        .product-detail-info {
+            flex: 1;
+            min-width: 300px;
+        }
+        
+        .product-detail-info h2 {
+            color: #1a5276;
+            margin-bottom: 15px;
+        }
+        
+        .product-detail-info p {
+            margin-bottom: 15px;
+        }
+        
+        .quantity {
+            font-weight: bold;
+            color: #27ae60;
+        }
+        
+        .back-button {
+            display: inline-block;
+            background-color: #1a5276;
+            color: white;
+            padding: 10px 15px;
+            border-radius: 3px;
+            text-decoration: none;
+            margin-top: 20px;
+            transition: background-color 0.3s;
+        }
+        
+        .back-button:hover {
+            background-color: #154360;
+        }
+        
+        /* Страница заказа */
+        .order-form {
+            background-color: white;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        
+        .order-form h2 {
+            color: #1a5276;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        
+        .form-group {
+            margin-bottom: 15px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        
+        .form-group input, .form-group select, .form-group textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 3px;
+            font-size: 16px;
+        }
+        
+        .form-group textarea {
+            height: 100px;
+            resize: vertical;
+        }
+        
+        .submit-button {
+            background-color: #27ae60;
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 3px;
+            cursor: pointer;
+            font-size: 16px;
+            width: 100%;
+            transition: background-color 0.3s;
+        }
+        
+        .submit-button:hover {
+            background-color: #219653;
+        }
+        
+        .search-results {
+            background-color: #f8f9fa;
+            border: 1px solid #ddd;
+            border-radius: 3px;
+            max-height: 150px;
+            overflow-y: auto;
+            display: none;
+        }
+        
+        .search-result-item {
+            padding: 8px 10px;
+            cursor: pointer;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .search-result-item:hover {
+            background-color: #eaf2f8;
+        }
+        
+        /* Подвал */
+        footer {
+            background-color: #1a5276;
+            color: white;
+            padding: 20px 0;
+            text-align: center;
+        }
+        
+        /* Адаптивность */
+        @media (max-width: 768px) {
+            .header-content {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            nav ul {
+                margin-top: 15px;
+                justify-content: center;
+            }
+            
+            .products-page {
+                flex-direction: column;
+            }
+            
+            .categories {
+                margin-right: 0;
+                margin-bottom: 20px;
+            }
+            
+            .product-detail-content {
+                flex-direction: column;
+            }
+            
+            .product-detail-image {
+                margin-right: 0;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .hero h1 {
+                font-size: 28px;
+            }
+            
+            .hero p {
+                font-size: 16px;
+            }
+            
+            .features {
+                grid-template-columns: 1fr;
+            }
+            
+            .products-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Шапка сайта -->
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">АТЛАНТ</div>
+                <nav>
+                    <ul>
+                        <li><a href="#" class="nav-link" data-page="home">Главная</a></li>
+                        <li><a href="#" class="nav-link" data-page="products">Товары</a></li>
+                        <li><a href="#" class="nav-link" data-page="order">Заказать онлайн</a></li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <!-- Основной контент -->
+    <main>
+        <div class="container">
+            <!-- Главная страница -->
+            <section id="home" class="page active">
+                <div class="hero">
+                    <h1>Магазин бытовой техники АТЛАНТ</h1>
+                    <p>Мы предлагаем широкий ассортимент качественной бытовой техники для вашего дома</p>
+                    <p>Доставка по Волгограду - бесплатно!</p>
+                </div>
+                
+                <div class="features">
+                    <div class="feature">
+                        <h3>Широкий ассортимент</h3>
+                        <p>У нас вы найдете все необходимое для вашего дома: холодильники, стиральные машины, плиты, телевизоры и многое другое.</p>
+                    </div>
+                    <div class="feature">
+                        <h3>Качество и надежность</h3>
+                        <p>Мы работаем только с проверенными производителями, чтобы предложить вам технику, которая прослужит долгие годы.</p>
+                    </div>
+                    <div class="feature">
+                        <h3>Профессиональная консультация</h3>
+                        <p>Наши специалисты помогут подобрать технику, которая идеально подойдет именно для ваших нужд.</p>
+                    </div>
+                </div>
+                
+                <div class="delivery-info">
+                    <h3>Бесплатная доставка по Волгограду</h3>
+                    <p>При заказе любой техники в черте города Волгоград мы осуществляем доставку абсолютно бесплатно. Также мы предлагаем услуги по установке и подключению техники.</p>
+                </div>
+                
+                <div class="map">
+                    <h2>Как до нас добраться</h2>
+                    <p>Мы находимся по адресу: г. Волгоград, ул. Примерная, д. 123</p>
+                    <p>Телефон: +7 (844) 123-45-67</p>
+                    <p>Время работы: Пн-Пт: 9:00-20:00, Сб-Вс: 10:00-18:00</p>
+                    <!-- Здесь можно добавить карту -->
+                    <div style="height: 300px; background-color: #f8f9fa; display: flex; align-items: center; justify-content: center; margin-top: 15px; border-radius: 5px;">
+                        Карта проезда будет здесь
+                    </div>
+                </div>
+            </section>
+
+            <!-- Страница товаров -->
+            <section id="products" class="page">
+                <div class="products-page">
+                    <div class="categories">
+                        <h2>Категории</h2>
+                        <ul class="category-list">
+                            <li><a href="#" data-category="refrigerators">Холодильники</a></li>
+                            <li><a href="#" data-category="washing-machines">Стиральные машины</a></li>
+                            <li><a href="#" data-category="gas-stoves">Газовые плиты</a></li>
+                            <li><a href="#" data-category="built-in-hobs">Встраиваемая варочная поверхность</a></li>
+                            <li><a href="#" data-category="built-in-ovens">Встраиваемый электродуховой шкаф</a></li>
+                            <li><a href="#" data-category="irons">Утюги</a></li>
+                            <li><a href="#" data-category="freezers">Морозильные камеры</a></li>
+                            <li><a href="#" data-category="hoods">Вытяжки</a></li>
+                            <li><a href="#" data-category="blenders">Блендеры</a></li>
+                            <li><a href="#" data-category="hair-dryers">Фены</a></li>
+                            <li><a href="#" data-category="small-appliances">Мелкобытовая техника</a></li>
+                            <li><a href="#" data-category="heaters">Обогреватели</a></li>
+                            <li><a href="#" data-category="kettles">Чайники</a></li>
+                            <li><a href="#" data-category="juicers">Соковыжималки</a></li>
+                            <li><a href="#" data-category="meat-grinders">Мясорубки</a></li>
+                            <li><a href="#" data-category="split-systems">Сплит системы</a></li>
+                            <li><a href="#" data-category="tv">Телевизоры</a></li>
+                            <li><a href="#" data-category="freezer-chests">Морозильные лари</a></li>
+                            <li><a href="#" data-category="gas-water-heaters">Газовые колонки</a></li>
+                        </ul>
+                    </div>
+                    
+                    <div class="products-container">
+                        <div id="products-grid" class="products-grid">
+                            <!-- Товары будут загружаться здесь -->
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Страница товара -->
+            <section id="product-detail" class="page">
+                <div class="product-detail">
+                    <div class="product-detail-content">
+                        <div class="product-detail-image" id="product-detail-image">
+                            <!-- Изображение товара -->
+                        </div>
+                        <div class="product-detail-info">
+                            <h2 id="product-detail-title">Название товара</h2>
+                            <p id="product-detail-description">Описание товара</p>
+                            <p class="quantity" id="product-detail-quantity">Количество: </p>
+                        </div>
+                    </div>
+                    <a href="#" class="back-button" id="back-to-products">Назад к товарам</a>
+                </div>
+            </section>
+
+            <!-- Страница заказа -->
+            <section id="order" class="page">
+                <div class="order-form">
+                    <h2>Онлайн заказ</h2>
+                    <form id="order-form">
+                        <div class="form-group">
+                            <label for="fullname">ФИО:</label>
+                            <input type="text" id="fullname" name="fullname" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="phone">Номер телефона:</label>
+                            <input type="tel" id="phone" name="phone" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="address">Адрес доставки:</label>
+                            <textarea id="address" name="address" required></textarea>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="product-search">Товар:</label>
+                            <input type="text" id="product-search" name="product" placeholder="Начните вводить название товара" required>
+                            <div class="search-results" id="search-results">
+                                <!-- Результаты поиска будут здесь -->
+                            </div>
+                        </div>
+                        
+                        <button type="submit" class="submit-button">Заказать</button>
+                    </form>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <!-- Подвал сайта -->
+    <footer>
+        <div class="container">
+            <p>© 2023 Магазин бытовой техники АТЛАНТ. Все права защищены.</p>
+            <p>г. Волгоград, ул. Примерная, д. 123 | Телефон: +7 (844) 123-45-67</p>
+        </div>
+    </footer>
+
+    <script>
+        // Данные товаров
+        const productsData = {
+            'refrigerators': [
+                { id: 1, name: 'Холодильник АТЛАНТ ХМ 4014-022', description: 'Двухкамерный холодильник с системой No Frost. Общий объем: 340 л. Энергопотребление: A+', quantity: 15 },
+                { id: 2, name: 'Холодильник АТЛАНТ ХМ 4208-000', description: 'Однокамерный холодильник с морозильной камерой. Общий объем: 240 л. Энергопотребление: A++', quantity: 8 },
+                { id: 3, name: 'Холодильник АТЛАНТ ХМ 4620-101', description: 'Двухкамерный холодильник с системой No Frost. Общий объем: 380 л. Энергопотребление: A+', quantity: 12 }
+            ],
+            'washing-machines': [
+                { id: 4, name: 'Стиральная машина АТЛАНТ 40М101', description: 'Стиральная машина фронтальной загрузки. Загрузка: 5 кг. Класс энергопотребления: A+++', quantity: 10 },
+                { id: 5, name: 'Стиральная машина АТЛАНТ 50С107', description: 'Стиральная машина с вертикальной загрузкой. Загрузка: 6 кг. Класс энергопотребления: A++', quantity: 7 }
+            ],
+            'gas-stoves': [
+                { id: 6, name: 'Газовая плита АТЛАНТ ПГ 4001-01', description: 'Газовая плита с электрическим духовым шкафом. 4 конфорки. Габариты: 60x85x60 см', quantity: 20 },
+                { id: 7, name: 'Газовая плита АТЛАНТ ПГ 4000-02', description: 'Газовая плита с газовым духовым шкафом. 4 конфорки. Габариты: 60x85x60 см', quantity: 15 }
+            ],
+            'built-in-hobs': [
+                { id: 8, name: 'Варочная панель АТЛАНТ ПВС 4200', description: 'Встраиваемая газовая варочная панель. 4 конфорки. Габариты: 58x51 см', quantity: 12 }
+            ],
+            'built-in-ovens': [
+                { id: 9, name: 'Духовой шкаф АТЛАНТ ЭДШ 40', description: 'Встраиваемый электрический духовой шкаф. Объем: 58 л. Класс энергопотребления: A', quantity: 9 }
+            ],
+            'irons': [
+                { id: 10, name: 'Утюг АТЛАНТ И-430', description: 'Паровой утюг с функцией вертикального отпаривания. Мощность: 2400 Вт', quantity: 25 }
+            ],
+            'freezers': [
+                { id: 11, name: 'Морозильная камера АТЛАНТ М 7208-100', description: 'Морозильная камера с верхней загрузкой. Объем: 206 л. Класс энергопотребления: A+', quantity: 6 }
+            ],
+            'hoods': [
+                { id: 12, name: 'Вытяжка АТЛАНТ АСВ 430-002', description: 'Встраиваемая вытяжка с угольным фильтром. Производительность: 430 м³/ч', quantity: 14 }
+            ],
+            'blenders': [
+                { id: 13, name: 'Блендер АТЛАНТ ВТ-1400', description: 'Погружной блендер с насадками. Мощность: 1400 Вт. Скоростей: 5', quantity: 18 }
+            ],
+            'hair-dryers': [
+                { id: 14, name: 'Фен АТЛАНТ ПБ-2000', description: 'Фен с ионизацией и функцией холодного воздуха. Мощность: 2000 Вт', quantity: 22 }
+            ],
+            'small-appliances': [
+                { id: 15, name: 'Микроволновая печь АТЛАНТ ММ 2011', description: 'Микроволновая печь с грилем. Объем: 20 л. Мощность: 800 Вт', quantity: 11 }
+            ],
+            'heaters': [
+                { id: 16, name: 'Обогреватель АТЛАНТ ТН-2000', description: 'Масляный обогреватель с термостатом. Мощность: 2000 Вт. 9 секций', quantity: 8 }
+            ],
+            'kettles': [
+                { id: 17, name: 'Электрочайник АТЛАНТ ЕК-173', description: 'Электрочайник из нержавеющей стали. Объем: 1,7 л. Мощность: 2200 Вт', quantity: 30 }
+            ],
+            'juicers': [
+                { id: 18, name: 'Соковыжималка АТЛАНТ МД-65', description: 'Центробежная соковыжималка. Мощность: 800 Вт. Объем контейнера: 1 л', quantity: 7 }
+            ],
+            'meat-grinders': [
+                { id: 19, name: 'Мясорубка АТЛАНТ ММ-41', description: 'Электрическая мясорубка. Мощность: 1800 Вт. Производительность: 2 кг/мин', quantity: 13 }
+            ],
+            'split-systems': [
+                { id: 20, name: 'Сплит-система АТЛАНТ АС-09', description: 'Инверторная сплит-система. Мощность охлаждения: 9000 BTU. Площадь помещения: до 25 м²', quantity: 5 }
+            ],
+            'tv': [
+                { id: 21, name: 'Телевизор АТЛАНТ ТВ-43', description: 'Телевизор с LED-экраном 43". Разрешение: Full HD. Smart TV: есть', quantity: 9 }
+            ],
+            'freezer-chests': [
+                { id: 22, name: 'Морозильный ларь АТЛАНТ МЛ-200', description: 'Морозильный ларь с верхней загрузкой. Объем: 200 л. Класс энергопотребления: A+', quantity: 4 }
+            ],
+            'gas-water-heaters': [
+                { id: 23, name: 'Газовая колонка АТЛАНТ ВПГ-20', description: 'Проточный газовый водонагреватель. Производительность: 20 л/мин. Мощность: 38 кВт', quantity: 6 }
+            ]
+        };
+
+        // Навигация по страницам
+        document.querySelectorAll('.nav-link').forEach(link => {
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+                const pageId = this.getAttribute('data-page');
+                
+                // Скрыть все страницы
+                document.querySelectorAll('.page').forEach(page => {
+                    page.classList.remove('active');
+                });
+                
+                // Показать выбранную страницу
+                document.getElementById(pageId).classList.add('active');
+                
+                // Если выбрана страница товаров, загружаем первую категорию
+                if (pageId === 'products') {
+                    loadCategory('refrigerators');
+                }
+            });
+        });
+
+        // Загрузка категории товаров
+        function loadCategory(category) {
+            const productsGrid = document.getElementById('products-grid');
+            productsGrid.innerHTML = '';
+            
+            // Обновляем активную категорию
+            document.querySelectorAll('.category-list a').forEach(link => {
+                link.classList.remove('active');
+            });
+            document.querySelector(`[data-category="${category}"]`).classList.add('active');
+            
+            // Загружаем товары выбранной категории
+            if (productsData[category]) {
+                productsData[category].forEach(product => {
+                    const productCard = document.createElement('div');
+                    productCard.className = 'product-card';
+                    productCard.setAttribute('data-id', product.id);
+                    
+                    productCard.innerHTML = `
+                        <div class="product-image">Изображение товара</div>
+                        <div class="product-info">
+                            <h3>${product.name}</h3>
+                            <p>${product.description}</p>
+                            <p>Количество: ${product.quantity} шт.</p>
+                        </div>
+                    `;
+                    
+                    productCard.addEventListener('click', function() {
+                        showProductDetail(product.id);
+                    });
+                    
+                    productsGrid.appendChild(productCard);
+                });
+            }
+        }
+
+        // Показать детали товара
+        function showProductDetail(productId) {
+            // Найти товар по ID
+            let product = null;
+            for (const category in productsData) {
+                product = productsData[category].find(p => p.id === productId);
+                if (product) break;
+            }
+            
+            if (product) {
+                document.getElementById('product-detail-title').textContent = product.name;
+                document.getElementById('product-detail-description').textContent = product.description;
+                document.getElementById('product-detail-quantity').textContent = `Количество: ${product.quantity} шт.`;
+                
+                // Скрыть все страницы и показать страницу товара
+                document.querySelectorAll('.page').forEach(page => {
+                    page.classList.remove('active');
+                });
+                document.getElementById('product-detail').classList.add('active');
+            }
+        }
+
+        // Назад к товарам
+        document.getElementById('back-to-products').addEventListener('click', function(e) {
+            e.preventDefault();
+            document.querySelectorAll('.page').forEach(page => {
+                page.classList.remove('active');
+            });
+            document.getElementById('products').classList.add('active');
+        });
+
+        // Обработчики для категорий
+        document.querySelectorAll('.category-list a').forEach(link => {
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+                const category = this.getAttribute('data-category');
+                loadCategory(category);
+            });
+        });
+
+        // Поиск товаров для формы заказа
+        const productSearch = document.getElementById('product-search');
+        const searchResults = document.getElementById('search-results');
+        
+        productSearch.addEventListener('input', function() {
+            const searchTerm = this.value.toLowerCase();
+            searchResults.innerHTML = '';
+            
+            if (searchTerm.length < 2) {
+                searchResults.style.display = 'none';
+                return;
+            }
+            
+            let results = [];
+            
+            // Поиск по всем товарам
+            for (const category in productsData) {
+                productsData[category].forEach(product => {
+                    if (product.name.toLowerCase().includes(searchTerm)) {
+                        results.push(product);
+                    }
+                });
+            }
+            
+            // Показать результаты
+            if (results.length > 0) {
+                results.forEach(product => {
+                    const resultItem = document.createElement('div');
+                    resultItem.className = 'search-result-item';
+                    resultItem.textContent = product.name;
+                    resultItem.addEventListener('click', function() {
+                        productSearch.value = product.name;
+                        searchResults.style.display = 'none';
+                    });
+                    searchResults.appendChild(resultItem);
+                });
+                searchResults.style.display = 'block';
+            } else {
+                searchResults.style.display = 'none';
+            }
+        });
+
+        // Скрыть результаты поиска при клике вне поля
+        document.addEventListener('click', function(e) {
+            if (e.target !== productSearch) {
+                searchResults.style.display = 'none';
+            }
+        });
+
+        // Обработка формы заказа
+        document.getElementById('order-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            alert('Ваш заказ принят! Мы свяжемся с вами в ближайшее время для подтверждения.');
+            this.reset();
+        });
+
+        // Инициализация: загружаем первую категорию при загрузке страницы
+        window.addEventListener('DOMContentLoaded', function() {
+            loadCategory('refrigerators');
+        });
+    </script>
+</body>
+</html>
